@@ -73,10 +73,10 @@ macOS/Linux:
 source .venv/bin/activate
 ```
 
-### 3. Install app dependencies
+### 3. Install dependencies
 
 ```bash
-python -m pip install streamlit yfinance prophet plotly pandas
+python -m pip install -r requirements.txt
 ```
 
 ### 4. Launch the app
@@ -91,11 +91,7 @@ Streamlit will print the local URL to open in your browser.
 
 An additional script, `evaluate_forecast.py`, evaluates Prophet on the latest portion of the historical data and compares it with a simple previous-close baseline. The test dates are taken from actual downloaded observations, rather than generated calendar days.
 
-Install the evaluation dependencies:
-
-```bash
-python -m pip install yfinance prophet pandas scikit-learn
-```
+The dependencies for the evaluation script are included in `requirements.txt`, so the same environment can be used for the app and evaluation.
 
 Run the default Apple example:
 
