@@ -1,151 +1,137 @@
-# Stock Market Analysis and Prediction
+# Stock Market Analysis and Forecasting
 
-A machine learning project focused on analysing historical stock market data and exploring time-series forecasting techniques using Python.
+A Python project that explores historical stock prices and time-series forecasting through an interactive Streamlit application. The current application uses **Prophet** to forecast closing prices for selected companies and visualizes historical data and forecast components.
 
-This project was developed as part of my B.Tech final-year project in Computer Science and Engineering, under faculty supervision and in collaboration with my project team. It introduced me to financial time-series data, data preprocessing, and the use of machine learning for prediction problems.
+**Live Demo:** https://sma-stock-market-analysis.vercel.app/  
+**Repository:** https://github.com/nirbhaycse/Stock_Market_Analysis.
 
-## Overview
+## Project Overview
 
-Stock prices change over time and are influenced by many factors. Analysing historical data can help us understand price patterns and investigate how forecasting models behave on time-dependent datasets.
+The application currently supports:
 
-The objective of this project was to study historical stock market data, prepare it for machine learning, and explore deep learning approaches for stock price prediction.
+- Selecting Google (GOOG), Apple (AAPL), Microsoft (MSFT), or GameStop (GME).
+- Downloading historical prices with `yfinance`.
+- Viewing recent raw price data.
+- Plotting historical opening and closing prices with Plotly.
+- Fitting a Prophet model to the historical closing-price series.
+- Generating and visualizing a forecast for a user-selected horizon of 1–4 years.
+- Viewing Prophet forecast components.
 
-**Live Demo:** [Stock Market Analysis](https://sma-stock-market-analysis.vercel.app/)
+The main app is in `Stock_Prediction_App.py`; the notebook version is `Stock_Prediction_App.ipynb`.
 
-**Source Code:** [GitHub Repository](https://github.com/nirbhaycse/Stock_Market_Analysis)
+## Tech Stack
 
-## Objectives
-
-- Retrieve and analyse historical stock market data.
-- Understand the preprocessing steps required before model training.
-- Apply normalization to numerical data using Min-Max scaling.
-- Explore Long Short-Term Memory (LSTM) networks for time-series forecasting.
-- Study different machine learning approaches to understand their potential for stock price prediction.
-- Understand the challenges involved in forecasting financial data.
-
-## Technologies Used
-
-- **Python** — data processing and model development
-- **yfinance** — retrieving historical financial market data
-- **Pandas and NumPy** — data manipulation and numerical operations
-- **Jupyter Notebook** — experimentation and analysis
-- **Scikit-learn** — preprocessing and machine learning utilities
-- **TensorFlow/Keras** — deep learning, where used in the project implementation
-
-*Note: The libraries listed above should be checked against the current source code before final submission.*
+- **Python**
+- **Streamlit** — interactive application interface
+- **yfinance** — historical market data
+- **Prophet** — time-series forecasting
+- **Plotly** — interactive charts
+- **Pandas** — data preparation
+- **scikit-learn** — metrics in the optional evaluation script
 
 ## Methodology
 
-The project follows a general machine learning workflow:
+1. **Data collection:** download historical stock data from Yahoo Finance using `yfinance`.
+2. **Exploration:** display recent observations and plot opening and closing prices.
+3. **Forecasting:** fit Prophet on the `Date` and `Close` columns, renamed to Prophet's required `ds` and `y` fields.
+4. **Visualization:** show the forecast and Prophet's trend/seasonality components.
+5. **Optional holdout evaluation:** use `evaluate_forecast.py` to compare Prophet with a previous-close baseline on the latest chronological portion of the data.
 
-### 1. Data Collection
+**Scope clarification:** the checked-in Streamlit application uses Prophet. LSTM, CNN, hybrid LSTM-CNN, and Min-Max scaling are not implemented in that application file. They should only be described as implemented project components if another verified notebook or source file contains those experiments.
 
-Historical stock market data is retrieved using `yfinance`. The data provides a basis for examining price movements over time.
+## Run the Streamlit App Locally
 
-### 2. Data Preprocessing
+### Prerequisites
 
-The collected data is prepared for model development. The project includes Min-Max normalization and the division of data into training and testing sets.
+- Python 3.9 or a compatible Python version supported by the installed dependencies
+- pip
 
-For time-series prediction, maintaining the chronological order of observations is important because future observations should not be used to train a model evaluated on earlier data.
+### 1. Clone the repository
 
-### 3. Model Development
+```bash
+git clone "https://github.com/nirbhaycse/Stock_Market_Analysis..git"
+cd "Stock_Market_Analysis."
+```
 
-Long Short-Term Memory (LSTM) networks were studied for forecasting stock prices. LSTMs are a type of recurrent neural network designed to learn patterns in sequential data.
+The repository name ends with a period, so keep the quoted URL/path as shown.
 
-The project report also discusses CNN and hybrid LSTM-CNN approaches, along with traditional machine learning methods. The implementation of each method should be verified in the source notebooks before treating it as an implemented and evaluated model.
+### 2. Create and activate a virtual environment
 
-### 4. Prediction and Analysis
+```bash
+python -m venv .venv
+```
 
-The prepared data is used to explore stock price forecasting. The predictions should be interpreted carefully because financial time series are noisy, non-stationary, and difficult to predict reliably.
+Windows PowerShell:
 
-A meaningful evaluation should compare predictions with actual values on unseen, chronologically later data.
+```powershell
+.venv\Scripts\Activate.ps1
+```
 
-## Key Learning Outcomes
+macOS/Linux:
 
-Through this project, I gained experience with:
+```bash
+source .venv/bin/activate
+```
 
-- Working with historical financial data using Python.
-- Understanding data preprocessing and normalization.
-- Learning the fundamentals of LSTM-based time-series forecasting.
-- Understanding the importance of training and testing datasets.
-- Recognizing the challenges of evaluating machine learning models on financial data.
-- Working on a collaborative academic project.
+### 3. Install app dependencies
 
-The project also motivated me to learn more about machine learning methods, experimental evaluation, and the reliability of predictions on real-world datasets.
+```bash
+python -m pip install streamlit yfinance prophet plotly pandas
+```
 
-## Limitations and Future Improvements
+### 4. Launch the app
 
-Stock price forecasting is a challenging problem, and historical patterns do not guarantee future performance. This project should be treated as an academic learning exercise, not as a reliable trading system or financial advice.
+```bash
+streamlit run Stock_Prediction_App.py
+```
 
-Potential improvements include:
+Streamlit will print the local URL to open in your browser.
 
-- Establishing simple baseline models before evaluating deep learning methods.
-- Comparing models using MAE and RMSE on a chronological test set.
-- Checking for data leakage during preprocessing and model evaluation.
-- Recording experimental settings and results for reproducibility.
-- Evaluating performance across different time periods and stocks.
-- Documenting the limitations of each forecasting approach.
+## Evaluate Forecasts on a Chronological Holdout
 
-These improvements would make the experimental process more systematic and help assess whether a model generalizes beyond the data used during training.
+An additional script, `evaluate_forecast.py`, evaluates Prophet on the latest portion of the historical data and compares it with a simple previous-close baseline. The test dates are taken from actual downloaded observations, rather than generated calendar days.
 
-## How to Run
+Install the evaluation dependencies:
 
-1. Clone the repository:
+```bash
+python -m pip install yfinance prophet pandas scikit-learn
+```
 
-   ```bash
-   git clone https://github.com/nirbhaycse/Stock_Market_Analysis.git
-   cd Stock_Market_Analysis
-   ```
+Run the default Apple example:
 
-2. Create and activate a Python virtual environment.
+```bash
+python evaluate_forecast.py --ticker AAPL --start 2016-01-01
+```
 
-   ```bash
-   python -m venv .venv
-   ```
+Try another supported ticker:
 
-   On Windows:
+```bash
+python evaluate_forecast.py --ticker MSFT --start 2016-01-01 --test-fraction 0.2
+```
 
-   ```bash
-   .venv\Scripts\activate
-   ```
+The script reports MAE, RMSE, and MAPE for Prophet and the baseline on the same holdout period. **No performance figures are stated here because the script has not been executed in this environment.** Run it and record the output, dependency versions, and evaluation dates before reporting numerical results.
 
-   On macOS or Linux:
+## Limitations
 
-   ```bash
-   source .venv/bin/activate
-   ```
+- Historical price patterns do not guarantee future outcomes.
+- A forecast chart alone does not demonstrate accuracy.
+- Results depend on the chosen ticker, data period, and evaluation method.
+- The optional holdout evaluation is a basic starting point; more rigorous work could use rolling-origin validation, additional baselines, and careful analysis of data leakage.
+- The app uses externally retrieved data, so results may change when it is run again.
 
-3. Install the dependencies required by the project:
+## Future Improvements
 
-   ```bash
-   pip install pandas numpy matplotlib scikit-learn yfinance jupyter
-   ```
-
-   Install TensorFlow only if it is required by the notebooks:
-
-   ```bash
-   pip install tensorflow
-   ```
-
-4. Start Jupyter:
-
-   ```bash
-   jupyter notebook
-   ```
-
-5. Open the relevant notebook in the repository and execute its cells in order.
-
-   If a notebook requires additional libraries or configuration, install or configure them as described in that notebook.
+- Add a pinned dependency file such as `requirements.txt`.
+- Add automated tests and error handling for unavailable data.
+- Compare Prophet with naïve, moving-average, and other appropriate baselines.
+- Use rolling or walk-forward evaluation across multiple time periods.
+- Document the exact dataset period, model configuration, and measured results.
+- Add screenshots and a reproducible results table after the experiments have been run.
 
 ## Academic Context
 
-**Project:** Stock Market Analysis  
-**Degree:** B.Tech in Computer Science and Engineering  
-**Institution:** Feroze Gandhi Institute of Engineering and Technology, Raebareli  
-**Affiliation:** Dr. A.P.J. Abdul Kalam Technical University (AKTU)
-
-This was a team project completed under faculty supervision.
+This project was developed as a B.Tech final-year team project in Computer Science and Engineering at Feroze Gandhi Institute of Engineering and Technology, Raebareli, affiliated with Dr. A.P.J. Abdul Kalam Technical University (AKTU), under faculty supervision.
 
 ## Disclaimer
 
-This project is for educational and experimental purposes only. It does not provide investment recommendations, and its predictions should not be used as the sole basis for financial decisions.
+This repository is for educational purposes only. It is not investment advice, and model outputs should not be used as the sole basis for financial decisions.
